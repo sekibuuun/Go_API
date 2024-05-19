@@ -4,18 +4,20 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/sekibuuun/go_api/handlers"
 )
 
 func main() {
+	r := mux.NewRouter()
 
-	http.HandleFunc("/hello", handlers.HelloHandler)
-	http.HandleFunc("/article", handlers.PostArticleHandler)
-	http.HandleFunc("/article/list", handlers.ArticleListHandler)
-	http.HandleFunc("/article/1", handlers.ArticleNumberHandler)
-	http.HandleFunc("/article/nice", handlers.ArticleNiceHandler)
-	http.HandleFunc("/comment", handlers.PostCommentHandler)
+	r.HandleFunc("/hello", handlers.HelloHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article", handlers.PostArticleHandler).Methods(http.MethodPost)
+	r.HandleFunc("/article/list", handlers.ArticleListHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article/1", handlers.ArticleNumberHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article/nice", handlers.ArticleNiceHandler).Methods(http.MethodPost)
+	r.HandleFunc("/comment", handlers.PostCommentHandler).Methods(http.MethodPost)
 
 	log.Println("server start at port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
