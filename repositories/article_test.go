@@ -95,8 +95,30 @@ func TestInsertArticle(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		const sqlStr = `delete from articles where title = ? and contents = ? and username = ?`
+		const sqlStr = `delete from articles where title = ? and contents = ? and username = ?;`
 
 		testDB.Exec(sqlStr, article.Title, article.Contents, article.UserName)
 	})
+}
+
+func TestUpdateNiceNum(t *testing.T) {
+	articleID := 1
+	before, err := repositories.SelectArticleDetail(testDB, articleID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = repositories.UpdateNiceNum(testDB, articleID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	after, err := repositories.SelectArticleDetail(testDB, articleID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if before.NiceNum+1 != after.NiceNum {
+		t.Errorf("NiceNum: get %d but want %d\n", after.NiceNum, before.NiceNum+1)
+	}
 }
