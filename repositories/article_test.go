@@ -77,3 +77,26 @@ func TestSelectArticleList(t *testing.T) {
 		t.Errorf("get %d but want %d\n", num, expectedNum)
 	}
 }
+
+func TestInsertArticle(t *testing.T) {
+	article := models.Article{
+		Title:    "insertTest",
+		Contents: "testest",
+		UserName: "saki",
+	}
+
+	expectedArticleNum := 3
+	newArticle, err := repositories.InsertArticle(testDB, article)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if newArticle.ID != expectedArticleNum {
+		t.Errorf("new article id is expected %d but got %d\n", newArticle.ID, expectedArticleNum)
+	}
+
+	t.Cleanup(func() {
+		const sqlStr = `delete from articles where title = ? and contents = ? and username = ?`
+
+		testDB.Exec(sqlStr, article.Title, article.Contents, article.UserName)
+	})
+}
