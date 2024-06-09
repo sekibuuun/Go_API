@@ -49,7 +49,7 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(articleList)
 }
 
-func ArticleNumberHandler(w http.ResponseWriter, req *http.Request) {
+func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
 	articleID, err := strconv.Atoi(mux.Vars(req)["id"])
 	if err != nil {
 		http.Error(w, "Invalid query parameter", http.StatusBadRequest)
@@ -63,7 +63,7 @@ func ArticleNumberHandler(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func ArticleNiceHandler(w http.ResponseWriter, req *http.Request) {
+func PostNiceHandler(w http.ResponseWriter, req *http.Request) {
 	var reqArticle models.Article
 	if err := json.NewDecoder(req.Body).Decode(&reqArticle); err != nil {
 		http.Error(w, "fail to decode json\n", http.StatusBadRequest)
