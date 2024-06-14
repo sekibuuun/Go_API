@@ -1,15 +1,23 @@
 package apperrors
 
-type myAppError struct {
+type MyAppError struct {
 	ErrCode
 	Message string
 	Err     error
 }
 
-func (myErr *myAppError) Error() string {
+func (myErr *MyAppError) Error() string {
 	return myErr.Err.Error()
 }
 
-func (myErr *myAppError) Unwrap() error {
+func (myErr *MyAppError) Unwrap() error {
 	return myErr.Err
+}
+
+func (code ErrCode) Wrap(err error, message string) error {
+	return &MyAppError{
+		ErrCode: code,
+		Message: message,
+		Err:     err,
+	}
 }
