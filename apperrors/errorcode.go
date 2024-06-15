@@ -1,6 +1,6 @@
 package apperrors
 
-type ErrCode int
+type ErrCode string
 
 const (
 	Unknown ErrCode = "U000"
@@ -14,3 +14,11 @@ const (
 	ReqBodyDecodeFailed ErrCode = "R001"
 	BadParam            ErrCode = "R002"
 )
+
+func (code ErrCode) Wrap(err error, message string) error {
+	return &MyAppError{
+		ErrCode: code,
+		Message: message,
+		Err:     err,
+	}
+}
