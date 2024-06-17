@@ -58,8 +58,6 @@ func (c *ArticleController) ArticleListHandler(w http.ResponseWriter, req *http.
 		page = 1
 	}
 
-	log.Println(page)
-
 	articleList, err := c.service.GetArticleListService(page)
 	if err != nil {
 		log.Println(err)
