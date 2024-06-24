@@ -3,7 +3,10 @@ package apperrors
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
+
+	"github.com/sekibuuun/go_api/api/middlewares"
 )
 
 func ErrorHandler(w http.ResponseWriter, req *http.Request, err error) {
@@ -14,6 +17,9 @@ func ErrorHandler(w http.ResponseWriter, req *http.Request, err error) {
 			Message: "internal process failed",
 			Err:     err,
 		}
+
+		traceID := middlewares.GetTraceID(req.Context())
+		log.Printf("[%d]error: %s\n", traceID, appErr)
 
 		var statusCode int
 
