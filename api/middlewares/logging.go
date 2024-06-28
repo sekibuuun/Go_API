@@ -11,6 +11,8 @@ type resLoggingWriter struct {
 	code int
 }
 
+type traceIDKey struct{}
+
 // func(w http.ResponseWriter, req *http.Request) {} は無名関数
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
